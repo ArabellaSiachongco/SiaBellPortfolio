@@ -1,10 +1,12 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, Preload, useGLTF } from "@react-three/drei";
-
+import { Canvas, useLoader } from "@react-three/fiber";
+import { OrbitControls, Preload } from "@react-three/drei";
+import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import CanvasLoader from "../Loader";
+
 const Boat = ({ isMobile }) => {
-  const boat = useGLTF("./boat/scene.gltf"); // Update with the path to your boat model
+  // Load the .glb file with GLTFLoader 
+  const boat = useLoader(GLTFLoader, "./boat/scene.glb");
 
   return (
     <mesh>
@@ -24,7 +26,7 @@ const Boat = ({ isMobile }) => {
         object={boat.scene}
         scale={isMobile ? 0.03 : 0.04}
         position={isMobile ? [1, -1, 0.5] : [1, -1, 0]}
-        rotation={[0, 4, (0 * Math.PI) / 2]}
+        rotation={[0, 4, 0]}
       />
     </mesh>
   );
@@ -49,26 +51,23 @@ const BoatCanvas = () => {
   }, []);
 
   return (
-    <>
-      <Canvas
-        frameloop="demand"
-        shadows
-        dpr={[1, 2]}
-        camera={{ position: [5, 2, 0], fov: 25 }}
-        gl={{ preserveDrawingBuffer: true }}
-      >
-        <Suspense fallback={<CanvasLoader />}>          
+    <Canvas
+      frameloop="demand"
+      shadows
+      dpr={[1, 2]}
+      camera={{ position: [5, 2, 0], fov: 25 }}
+      gl={{ preserveDrawingBuffer: true }}
+    >
+      <Suspense fallback={<CanvasLoader />}>
         <OrbitControls
-            enableZoom={false}
-            maxPolarAngle={Math.PI / 2}
-            minPolarAngle={0.5}
-          />
-          <Boat isMobile={isMobile} />
-          <Preload all />
-        </Suspense>
-      </Canvas>
-
-    </>
+          enableZoom={false}
+          maxPolarAngle={Math.PI / 2}
+          minPolarAngle={0.5}
+        />
+        <Boat isMobile={isMobile} />
+        <Preload all />
+      </Suspense>
+    </Canvas>
   );
 };
 
