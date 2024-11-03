@@ -57,7 +57,8 @@ const BoatCanvas = () => {
         camera={{ position: [5, 2, 0], fov: 25 }}
         gl={{ preserveDrawingBuffer: true }}
       >
-        <Suspense fallback={<CanvasLoader />}>          <OrbitControls
+        <Suspense fallback={<CanvasLoader />}>          
+        <OrbitControls
             enableZoom={false}
             maxPolarAngle={Math.PI / 2}
             minPolarAngle={0.5}
